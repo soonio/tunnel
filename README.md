@@ -1,8 +1,16 @@
 # 通过SSH通道连接服务
 
-- [x] MYSQL
-- [x] Redis
-- [x] Mongo
+## 使用
+
+  ```bash
+  go get -u github.com/soonio/tunnel
+  ```
+
+## 支持内容
+
+  - [x] MYSQL
+  - [x] Redis
+  - [x] Mongo
 
 ## Usage
 
