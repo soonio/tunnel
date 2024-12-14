@@ -14,7 +14,7 @@ type Mongo struct {
 	uri    string
 }
 
-func Mon(uri string) *Mongo {
+func New(uri string) *Mongo {
 	return &Mongo{uri: uri}
 }
 
