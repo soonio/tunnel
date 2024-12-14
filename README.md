@@ -50,6 +50,7 @@
   if err := redx.Connect(UseTunnel()); err != nil {
     panic(err)
   }
+  defer redx.Close()
   ```
   
 - Mongo
@@ -59,4 +60,5 @@
   if err := monx.Connect(UseTunnel().Client()); err != nil {
     panic(err)
   }
+  defer monx.Close()
   ```
