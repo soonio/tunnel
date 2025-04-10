@@ -2,6 +2,7 @@ package tunnel
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net"
 
@@ -18,10 +19,23 @@ func New(c Conf) *Tunnel {
 }
 
 func (s *Tunnel) Connect() error {
+	var am ssh.AuthMethod
+	if s.conf.Secret != "" {
+		am = ssh.Password(s.conf.Secret)
+	} else if s.conf.Key != "" {
+		signer, err := ssh.ParsePrivateKey([]byte(s.conf.Key))
+		if err != nil {
+			return err
+		}
+		am = ssh.PublicKeys(signer)
+	} else {
+		return errors.New("no auth method")
+	}
+
 	config := &ssh.ClientConfig{
 		User:            s.conf.User,
 		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
-		Auth:            []ssh.AuthMethod{ssh.Password(s.conf.Secret)},
+		Auth:            []ssh.AuthMethod{am},
 	}
 	var err error
 	s.client, err = ssh.Dial("tcp", fmt.Sprintf("%s:%d", s.conf.Host, s.conf.Port), config)
